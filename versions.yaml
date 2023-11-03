@@ -1,0 +1,9 @@
+##### versions #####
+
+auda:
+  image: "quay.io/centos/centos"
+  tag: "stream8"
+
+central:
+  image: "docker.io/httpd"
+  tag: "bookworm"
