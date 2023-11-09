@@ -4,7 +4,7 @@ COPY requirements.txt .
 
 RUN dnf install -y python3-pip git && \
 	pip3 install -r requirements.txt && \
-	mkdir /opt/podman && \
+	mkdir /home/podman && \
 	chmod 777 /home/podman && \
 	chown 1000:0 /home/podman #&& \
 	#mkdir -p /.local/share/containers/storage/libpod && \
