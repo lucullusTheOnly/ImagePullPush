@@ -14,7 +14,7 @@ RUN dnf install -y python3-pip git && \
 WORKDIR /home/podman
 COPY pull.py .
 COPY versions.yaml .
-RUN chmod 777 /home/podman/* && chown 1000:0 /home/podman/*
+RUN chmod -R 777 /home/podman/ && chown -R 1000:0 /home/podman/
 USER 1000:0
 
 ENTRYPOINT python3 ./pull.py
