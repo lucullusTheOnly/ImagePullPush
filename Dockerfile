@@ -1,8 +1,11 @@
-FROM quay.io/podman/stable
+#FROM quay.io/podman/stable
+FROM redhat/ubi8:8.6
 
 COPY requirements.txt .
 
-RUN dnf install -y python3-pip git && \
+RUN dnf install -y skopeo python3-pip git && \
+  useradd --uid 1000 --home-dir /home/skopeo skopeo && \
+  pip3 install --upgrade pip && \
 	pip3 install -r requirements.txt
 #&& \
 	#mkdir /home/podman && \
@@ -12,10 +15,11 @@ RUN dnf install -y python3-pip git && \
 	#chown -R 1000:0 /.local && \
 	#chmod -R 777 /.local
 
-WORKDIR /home/podman
+
+WORKDIR /home/skopeo
 COPY pull.py .
 COPY versions.yaml .
-RUN chmod -R 777 /home/podman/ && chown -R 1000:1000 /home/podman/
+RUN chmod -R 777 /home/skopeo && chown -R 1000:1000 /home/skopeo
 USER 1000:1000
 
 ENTRYPOINT python3 ./pull.py
