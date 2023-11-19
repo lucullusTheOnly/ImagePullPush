@@ -9,6 +9,11 @@ if 'CHECK_INTERVAL' in os.environ.keys():
 else:
     interval = 10
 
+if 'SKOPEO_OPTIONS' in os.environ.keys():
+    skopeo_options = os.environ['SKOPEO_OPTIONS']
+else:
+    skopeo_options = ""
+
 # Load version file from either of the following sources:
 #   Git Repo
 #   Locally mounted file
@@ -30,7 +35,7 @@ while True:
     print(str(datetime.datetime.now())+": Checking images")
     for key, data in versions.items():
         # Pull
-        result = subprocess.run(["skopeo", "copy", "docker://"+data["image"]+":"+data["tag"], "docker://"+os.environ['OCP_REGISTRY_URL']+"/"+os.environ['OCP_PROJECT']+"/"+os.environ['OCP_IMAGESTREAM']+":"+os.environ['OCP_IMAGE_TAG']])
+        result = subprocess.run(["skopeo", skopeo_options, "copy", "docker://"+data["image"]+":"+data["tag"], "docker://"+os.environ['OCP_REGISTRY_URL']+"/"+os.environ['OCP_PROJECT']+"/"+os.environ['OCP_IMAGESTREAM']+":"+os.environ['OCP_IMAGE_TAG']])
         # Tag
         #result = subprocess.run(["podman", "tag", data["image"]+":"+data["tag"], os.environ['OCP_REGISTRY_URL']+"/"+os.environ['OCP_PROJECT']+"/"+os.environ['OCP_IMAGESTREAM']+":"+os.environ['OCP_IMAGE_TAG']])
         # Push
