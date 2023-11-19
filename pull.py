@@ -35,7 +35,9 @@ while True:
     print(str(datetime.datetime.now())+": Checking images")
     for key, data in versions.items():
         # Pull
-        result = subprocess.run(["skopeo", skopeo_options, "copy", "docker://"+data["image"]+":"+data["tag"], "docker://"+os.environ['OCP_REGISTRY_URL']+"/"+os.environ['OCP_PROJECT']+"/"+os.environ['OCP_IMAGESTREAM']+":"+os.environ['OCP_IMAGE_TAG']])
+        name = data["image"][data['image'].rfind("/")+1:data['image'].rfind(":")]
+        tag = data["image"][data.rfind(":")+1:]
+        result = subprocess.run(["skopeo", skopeo_options, "copy", "docker://"+data["image"]+":"+data["tag"], "docker://"+os.environ['OCP_REGISTRY_URL']+"/"+os.environ['OCP_PROJECT']+"/"+name+":"+tag])
         # Tag
         #result = subprocess.run(["podman", "tag", data["image"]+":"+data["tag"], os.environ['OCP_REGISTRY_URL']+"/"+os.environ['OCP_PROJECT']+"/"+os.environ['OCP_IMAGESTREAM']+":"+os.environ['OCP_IMAGE_TAG']])
         # Push
