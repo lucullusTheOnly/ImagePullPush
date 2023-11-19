@@ -38,4 +38,4 @@ while True:
     # Wait
     print("")
     print("")
-    time.sleep(interval)
+    time.sleep(int(interval))
