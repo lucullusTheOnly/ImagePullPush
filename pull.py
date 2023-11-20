@@ -15,6 +15,9 @@ if 'SKOPEO_OPTIONS' in os.environ.keys():
 else:
     skopeo_options = ""
 
+if 'OCP_USERNAME' in os.environ.keys():
+    result = subprocess.run(["skopeo", "login", "--username="+os.environ['OCP_USERNAME'], "--password="+os.environ['OCP_TOKEN'], os.environ['OCP_REGISTRY_URL']])
+
 # Load version file from either of the following sources:
 #   Git Repo
 #   Locally mounted file
