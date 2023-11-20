@@ -6,7 +6,8 @@ COPY requirements.txt .
 RUN dnf install -y skopeo python3-pip git && \
   useradd --uid 1000 --gid 0 --home-dir /home/skopeo skopeo && \
   pip3 install --upgrade pip && \
-	pip3 install -r requirements.txt
+	pip3 install -r requirements.txt && \
+  chmod -R g=u /run
 #&& \
 	#mkdir /home/podman && \
 	#chmod 777 /home/podman && \
@@ -19,7 +20,7 @@ RUN dnf install -y skopeo python3-pip git && \
 WORKDIR /home/skopeo
 COPY pull.py .
 COPY versions.yaml .
-RUN chmod -R 777 /home/skopeo && chown -R 1000:0 /home/skopeo
+RUN chmod -R 770 /home/skopeo && chown -R 1000:0 /home/skopeo
 USER 1000:0
 
 ENTRYPOINT python3 ./pull.py
