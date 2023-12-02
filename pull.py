@@ -25,10 +25,14 @@ if 'OCP_USERNAME' in os.environ.keys():
 if 'GIT_REPO' in os.environ.keys():
     if 'GIT_PATH' not in os.environ.keys():
         print("ERROR: No path in Git repo provided", file=sys.stderr)
+        exit(1)
     result = subprocess.run(["git", "-C", "/home/skopeo/", "clone", os.environ['GIT_REPO'], "sourcerepo"])
-    print(os.listdir("/home/skopeo/sourcerepo"))
-    with open("/home/skopeo/sourcerepo/"+os.environ['GIT_PATH'], "r") as f:
-        versions = yaml.safe_load(f)
+    try:
+        with open("/home/skopeo/sourcerepo/"+os.environ['GIT_PATH'], "r") as f:
+            versions = yaml.safe_load(f)
+    except FileNotFound as e:
+        print("ERROR: versions file not found under path \""+os.environ['GIT_PATH']+"\" in git repo!")
+        exit(1)
 elif 'LOCAL_VERSION_FILEPATH' in os.environ.keys():
     with open(os.environ['LOCAL_VERSION_FILEPATH'], "r") as f:
         versions = yaml.safe_load(f)
