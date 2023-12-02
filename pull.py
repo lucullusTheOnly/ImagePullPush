@@ -5,6 +5,7 @@ import sys
 import time
 import datetime
 import re
+import urllib.parse
 
 if 'CHECK_INTERVAL' in os.environ.keys():
     interval = os.environ['CHECK_INTERVAL']
@@ -34,7 +35,7 @@ if 'GIT_REPO' in os.environ.keys():
         repo = "https://" + repo
         match = re.match('^[a-z]+://', repo)
     if 'GIT_username' in os.environ.keys():
-        repo = repo[:match.span()[1]]+os.environ['GIT_username']+":"+os.environ['GIT_password']+"@"+repo[match.span()[1]:]
+        repo = repo[:match.span()[1]]+urllib.parse.quote(os.environ['GIT_username'])+":"+urllib.parse.quote(os.environ['GIT_password'])+"@"+repo[match.span()[1]:]
     print("Pulling repo "+repo)
     result = subprocess.run(["git", "-C", "/home/skopeo/", "clone", repo, "sourcerepo"])
     if result.returncode != 0:
