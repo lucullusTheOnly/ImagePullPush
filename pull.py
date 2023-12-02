@@ -32,8 +32,8 @@ if 'GIT_REPO' in os.environ.keys():
     if not match:
         repo = "https://" + repo
         match = re.match('^[a-z]+://', repo)
-    if 'GIT_USERNAME' in os.environ.keys():
-        repo = repo[:match.span()[1]]+os.environ['GIT_USERNAME']+":"+os.environ['GIT_PASSWORD']+"@"+repo[match.span()[1]:]
+    if 'GIT_username' in os.environ.keys():
+        repo = repo[:match.span()[1]]+os.environ['GIT_username']+":"+os.environ['GIT_password']+"@"+repo[match.span()[1]:]
     print("Pulling repo "+repo)
     result = subprocess.run(["git", "-C", "/home/skopeo/", "clone", repo, "sourcerepo"])
     if result.returncode != 0:
