@@ -4,6 +4,7 @@ import os
 import sys
 import time
 import datetime
+import re
 
 if 'CHECK_INTERVAL' in os.environ.keys():
     interval = os.environ['CHECK_INTERVAL']
@@ -26,7 +27,15 @@ if 'GIT_REPO' in os.environ.keys():
     if 'GIT_PATH' not in os.environ.keys():
         print("ERROR: No path in Git repo provided", file=sys.stderr)
         exit(1)
-    result = subprocess.run(["git", "-C", "/home/skopeo/", "clone", os.environ['GIT_REPO'], "sourcerepo"])
+    repo = os.environ['GIT_REPO']
+    match = re.match('^[a-z]+://', repo)
+    if not match:
+        repo = "https://" + repo
+        match = re.match('^[a-z]+://', repo)
+    if 'GIT_USERNAME' in os.environ.keys():
+        repo = repo[:match.span()[1]]+os.environ['GIT_USERNAME']+":"+os.environ['GIT_PASSWORD']+"@"+repo[match.span()[1]:]
+    print("Pulling repo "+repo)
+    result = subprocess.run(["git", "-C", "/home/skopeo/", "clone", repo, "sourcerepo"])
     if result.returncode != 0:
         print("ERROR: git returned code "+str(result.returncode))
         exit(1)
