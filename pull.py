@@ -25,7 +25,7 @@ if 'OCP_USERNAME' in os.environ.keys():
 if 'GIT_REPO' in os.environ.keys():
     if 'GIT_PATH' not in os.environ.keys():
         print("ERROR: No path in Git repo provided", file=sys.stderr)
-    result = subprocess.run(["git", "clone", "-c /home/podman/", os.environ['GIT_REPO'], "sourerepo"])
+    result = subprocess.run(["git", "clone", "-c /home/skopeo/", os.environ['GIT_REPO'], "sourerepo"])
     with open("/home/podman/sourcerepo/"+os.environ['GIT_PATH'], "r") as f:
         versions = yaml.safe_load(f)
 elif 'LOCAL_VERSION_FILEPATH' in os.environ.keys():
