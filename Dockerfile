@@ -16,7 +16,7 @@ RUN dnf install -y skopeo python3-pip git && \
 	#chown -R 1000:0 /.local && \
 	#chmod -R 777 /.local
 
-
+ENV PYTHONUNBUFFERED=1
 WORKDIR /home/skopeo
 COPY pull.py .
 COPY versions.yaml .
