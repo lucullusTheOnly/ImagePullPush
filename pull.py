@@ -30,7 +30,6 @@ if 'GIT_REPO' in os.environ.keys():
         exit(1)
     repo = os.environ['GIT_REPO']
     match = re.match('^[a-z]+://', repo)
-    print(os.environ)
     if not match:
         repo = "https://" + repo
         match = re.match('^[a-z]+://', repo)
