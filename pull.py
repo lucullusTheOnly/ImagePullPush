@@ -27,6 +27,9 @@ if 'GIT_REPO' in os.environ.keys():
         print("ERROR: No path in Git repo provided", file=sys.stderr)
         exit(1)
     result = subprocess.run(["git", "-C", "/home/skopeo/", "clone", os.environ['GIT_REPO'], "sourcerepo"])
+    if result.returncode != 0:
+        print("ERROR: git returned code "+str(result.returncode))
+        exit(1)
     try:
         with open("/home/skopeo/sourcerepo/"+os.environ['GIT_PATH'], "r") as f:
             versions = yaml.safe_load(f)
