@@ -16,7 +16,7 @@ else:
     skopeo_options = ""
 
 if 'OCP_USERNAME' in os.environ.keys():
-    result = subprocess.run(["skopeo", "login", "--username="+os.environ['OCP_USERNAME'], "--password="+os.environ['OCP_TOKEN'], os.environ['OCP_REGISTRY_URL']])
+    result = subprocess.run(["skopeo", "login", "--tls-verify=false", "--username="+os.environ['OCP_USERNAME'], "--password="+os.environ['OCP_TOKEN'], os.environ['OCP_REGISTRY_URL']])
 
 # Load version file from either of the following sources:
 #   Git Repo
@@ -28,7 +28,7 @@ if 'GIT_REPO' in os.environ.keys():
     result = subprocess.run(["git", "clone", "-c /home/podman/", os.environ['GIT_REPO'], "sourerepo"])
     with open("/home/podman/sourcerepo/"+os.environ['GIT_PATH'], "r") as f:
         versions = yaml.safe_load(f)
-elif 'LOCAL_VERION_FILEPATH' in os.environ.keys():
+elif 'LOCAL_VERSION_FILEPATH' in os.environ.keys():
     with open(os.environ['LOCAL_VERSION_FILEPATH'], "r") as f:
         versions = yaml.safe_load(f)
 else:
@@ -40,7 +40,10 @@ while True:
     for key, data in versions.items():
         # Pull
         name = data["image"][data['image'].rfind("/")+1:]
-        command = ["skopeo", "copy", "docker://"+data["image"]+":"+data["tag"], "docker://"+os.environ['OCP_REGISTRY_URL']+"/"+os.environ['OCP_PROJECT']+"/"+name+":"+data["tag"]]
+        if skopeo_options != "":
+            command = ["skopeo", "copy", skopeo_options, "docker://"+data["image"]+":"+data["tag"], "docker://"+os.environ['OCP_REGISTRY_URL']+"/"+os.environ['OCP_PROJECT']+"/"+name+":"+data["tag"]]
+        else:
+            command = ["skopeo", "copy", "docker://"+data["image"]+":"+data["tag"], "docker://"+os.environ['OCP_REGISTRY_URL']+"/"+os.environ['OCP_PROJECT']+"/"+name+":"+data["tag"]]
         print(" ".join(command), file=sys.stdout)
         result = subprocess.run(command)
         # Tag
