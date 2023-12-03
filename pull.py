@@ -65,7 +65,7 @@ else:
     with open('versions.yaml', 'r') as f:
         versions = yaml.safe_load(f)
 
-while True:
+while interval > 0:
     print(str(datetime.datetime.now())+": Checking images", file=sys.stdout)
     for key, data in versions.items():
         # Pull
