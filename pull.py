@@ -8,7 +8,7 @@ import re
 import urllib.parse
 
 if 'CHECK_INTERVAL' in os.environ.keys():
-    interval = os.environ['CHECK_INTERVAL']
+    interval = int(os.environ['CHECK_INTERVAL'])
 else:
     interval = 10
 
