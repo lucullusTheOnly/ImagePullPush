@@ -32,7 +32,7 @@ if 'GIT_REPO' in os.environ.keys():
         with open('/.ssh/id_rsa','w') as f:
             f.write(os.environ['GIT_SSHKEY'])
         os.chmod('/.ssh/id_rsa', 0o600)
-    time.sleep(interval)
+    
     repo = os.environ['GIT_REPO']
     match = re.match('^[a-z]+://', repo)
     if not match:
