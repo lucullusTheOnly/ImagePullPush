@@ -28,6 +28,10 @@ if 'GIT_REPO' in os.environ.keys():
     if 'GIT_PATH' not in os.environ.keys():
         print("ERROR: No path in Git repo provided", file=sys.stderr)
         exit(1)
+    if 'GIT_SSHKEY' in os.environ.keys():
+        with open('/.ssh/id_rsa','w') as f:
+            f.write(os.environ['GIT_SSHKEY'])
+        os.chmod('0600')
     repo = os.environ['GIT_REPO']
     match = re.match('^[a-z]+://', repo)
     if not match:
