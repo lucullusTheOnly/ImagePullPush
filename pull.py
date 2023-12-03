@@ -19,7 +19,7 @@ else:
 
 if 'OCP_USERNAME' in os.environ.keys():
     result = subprocess.run(["skopeo", "login", "--tls-verify=false", "--username="+os.environ['OCP_USERNAME'], "--password="+os.environ['OCP_TOKEN'], os.environ['OCP_REGISTRY_URL']])
-time.sleep(interval)
+
 # Load version file from either of the following sources:
 #   Git Repo
 #   Locally mounted file
@@ -32,6 +32,7 @@ if 'GIT_REPO' in os.environ.keys():
         with open('/.ssh/id_rsa','w') as f:
             f.write(os.environ['GIT_SSHKEY'])
         os.chmod('0600')
+    time.sleep(interval)
     repo = os.environ['GIT_REPO']
     match = re.match('^[a-z]+://', repo)
     if not match:
