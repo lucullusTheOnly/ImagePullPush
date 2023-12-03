@@ -7,7 +7,10 @@ RUN dnf install -y skopeo python3-pip git && \
   useradd --uid 1000 --gid 0 --home-dir /home/skopeo skopeo && \
   pip3 install --upgrade pip && \
 	pip3 install -r requirements.txt && \
-  chmod -R g=u /run
+  chmod -R g=u /run && \
+  mkdir -p /home/skopeo/.ssh/ && \
+  chgrp 0 /home/skopeo/.ssh/ && \
+  chmod -R g=u /home/skopeo/.ssh
 #&& \
 	#mkdir /home/podman && \
 	#chmod 777 /home/podman && \
