@@ -14,6 +14,7 @@ RUN dnf install -y skopeo python3-pip git && \
   chmod -R g=u /.ssh
 
 ENV PYTHONUNBUFFERED=1
+ENV GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 WORKDIR /home/skopeo
 COPY pull.py .
 COPY versions.yaml .
