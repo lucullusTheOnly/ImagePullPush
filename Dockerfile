@@ -8,19 +8,10 @@ RUN dnf install -y skopeo python3-pip git && \
   pip3 install --upgrade pip && \
 	pip3 install -r requirements.txt && \
   chmod -R g=u /run && \
-  mkdir -p /home/skopeo/.ssh/ && \
-  chgrp 0 /home/skopeo/.ssh/ && \
-  chmod -R g=u /home/skopeo/.ssh && \
+# Creating ssh directory for using ssh public key authentication for git
   mkdir -p /.ssh/ && \
   chgrp 0 /.ssh/ && \
   chmod -R g=u /.ssh
-#&& \
-	#mkdir /home/podman && \
-	#chmod 777 /home/podman && \
-	#chown 1000:0 /home/podman #&& \
-	#mkdir -p /.local/share/containers/storage/libpod && \
-	#chown -R 1000:0 /.local && \
-	#chmod -R 777 /.local
 
 ENV PYTHONUNBUFFERED=1
 WORKDIR /home/skopeo
