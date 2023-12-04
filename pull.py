@@ -25,7 +25,7 @@ else:
     source_registry = ""
 
 if 'OCP_USERNAME' in os.environ.keys():
-    result = subprocess.run(["skopeo", "login", "--tls-verify=false", "--username="+os.environ['OCP_USERNAME'], "--password="+os.environ['OCP_TOKEN'], os.environ['OCP_REGISTRY_URL']])
+    result = subprocess.run(["skopeo", "login", "--tls-verify=false", "--username="+os.environ['OCP_USERNAME'], "--password="+os.environ['OCP_TOKEN'], os.environ['OCP_REGISTRY_URL']+"/"+os.environ['OCP_PROJECT']])
 
 # Load version file from either of the following sources:
 #   Git Repo
