@@ -76,7 +76,6 @@ while interval > 0:
             command = ["skopeo", "copy", "docker://"+source_registry+data["image"]+":"+data["tag"], "docker://"+os.environ['OCP_REGISTRY_URL']+"/"+os.environ['OCP_PROJECT']+"/"+name+":"+data["tag"]]
         print(" ".join(command), file=sys.stdout)
         result = subprocess.run(command)
-        time.sleep(interval)
     # Wait
     print("", file=sys.stdout)
     print("", file=sys.stdout)
