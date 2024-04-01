@@ -19,7 +19,7 @@ else:
 
 if 'SOURCE_REGISTRY_URL' in os.environ.keys():
     source_registry = os.environ['SOURCE_REGISTRY_URL']
-    if not source_registry.endswitch('/'):
+    if not source_registry.endswith('/'):
         source_registry = source_registry + '/'
 else:
     source_registry = ""
@@ -71,9 +71,13 @@ while interval > 0:
         # Pull
         name = data["image"][data['image'].rfind("/")+1:]
         if skopeo_options != "":
-            command = ["skopeo", "copy", skopeo_options, "docker://"+source_registry+data["image"]+":"+data["tag"], "docker://"+os.environ['OCP_REGISTRY_URL']+"/"+os.environ['OCP_PROJECT']+"/"+name+":"+data["tag"]]
+            command = ["skopeo", "copy", skopeo_options]
         else:
-            command = ["skopeo", "copy", "docker://"+source_registry+data["image"]+":"+data["tag"], "docker://"+os.environ['OCP_REGISTRY_URL']+"/"+os.environ['OCP_PROJECT']+"/"+name+":"+data["tag"]]
+            command = ["skopeo", "copy"]
+        if 'SOURCE_USERNAME' in os.environ.keys():
+            command = command + ["-u="+os.environ['SOURCE_USERNAME'], "-p="+os.environ['SOURCE_PASSWORD'], "docker://"+source_registry+data["image"]+":"+data["tag"], "docker://"+os.environ['OCP_REGISTRY_URL']+"/"+os.environ['OCP_PROJECT']+"/"+name+":"+data["tag"]]
+        else:
+            command = command + ["docker://"+source_registry+data["image"]+":"+data["tag"], "docker://"+os.environ['OCP_REGISTRY_URL']+"/"+os.environ['OCP_PROJECT']+"/"+name+":"+data["tag"]]
         print(" ".join(command), file=sys.stdout)
         result = subprocess.run(command)
     # Wait
